@@ -1,3 +1,41 @@
 package main
 
-func main() {}
+import (
+	"fmt"
+	"os"
+	"strings"
+
+	"github.com/alexflint/go-arg"
+	termtables "github.com/brettski/go-termtables"
+)
+
+func getPaths() {
+	path, variableExists := os.LookupEnv("PATH")
+
+	if variableExists {
+		paths := strings.Split(path, ":")
+		table := termtables.CreateTable()
+
+		table.AddHeaders("Path", "Exists")
+
+		for _, path := range paths {
+			if _, err := os.Stat(path); err == nil {
+				table.AddRow(path, "\u2705")
+			} else if os.IsNotExist(err) {
+				table.AddRow(path, "\u274C")
+			} else {
+				fmt.Println("WHAT WENT WRONG")
+			}
+		}
+
+		fmt.Println(table.Render())
+	}
+}
+func main() {
+	var args struct {
+		//Ugly bool `arg:"-u" default:"false" help:"Remove colorized output. Yes it's ugly."`
+	}
+
+	arg.MustParse(&args)
+	getPaths()
+}
