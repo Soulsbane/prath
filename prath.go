@@ -18,6 +18,7 @@ func getPaths() {
 
 		table.AddHeaders("Path", "Exists")
 
+		// FIX: Currently the exists string doesn't work for all cli's do to utf-8 support.
 		for _, path := range paths {
 			if _, err := os.Stat(path); err == nil {
 				table.AddRow(path, "\u2705")
@@ -31,6 +32,7 @@ func getPaths() {
 		fmt.Println(table.Render())
 	}
 }
+
 func main() {
 	var args struct {
 		//Ugly bool `arg:"-u" default:"false" help:"Remove colorized output. Yes it's ugly."`
