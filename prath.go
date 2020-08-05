@@ -7,6 +7,7 @@ import (
 
 	"github.com/alexflint/go-arg"
 	termtables "github.com/brettski/go-termtables"
+	"github.com/fatih/color"
 )
 
 func getPaths() {
@@ -21,9 +22,9 @@ func getPaths() {
 		// FIX: Currently the exists string doesn't work for all cli's do to utf-8 support.
 		for _, path := range paths {
 			if _, err := os.Stat(path); err == nil {
-				table.AddRow(path, "\u2705")
+				table.AddRow(path, "Yes")
 			} else if os.IsNotExist(err) {
-				table.AddRow(path, "\u274C")
+				table.AddRow(color.RedString(path), color.RedString("No"))
 			} else {
 				fmt.Println("WHAT WENT WRONG")
 			}
