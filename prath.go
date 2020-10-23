@@ -3,18 +3,19 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
+	"path/filepath"
 
 	"github.com/alexflint/go-arg"
 	termtables "github.com/brettski/go-termtables"
 	"github.com/fatih/color"
 )
 
+// FIXME: Highlight duplicates
 func getPaths() {
 	path, variableExists := os.LookupEnv("PATH")
 
 	if variableExists {
-		paths := strings.Split(path, ":")
+		paths := filepath.SplitList(path)
 		table := termtables.CreateTable()
 
 		table.AddHeaders("Path", "Exists")
