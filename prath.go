@@ -27,7 +27,7 @@ func getPaths() {
 			} else if os.IsNotExist(err) {
 				pathDataTable.AppendRow(table.Row{color.RedString(path), color.RedString("No")})
 			} else {
-				fmt.Println("WHAT WENT WRONG")
+				fmt.Println("Error: ", err)
 			}
 		}
 		pathDataTable.SetStyle(table.StyleRounded)
