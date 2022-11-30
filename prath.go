@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 
 	"github.com/alexflint/go-arg"
-	termtables "github.com/brettski/go-termtables"
 	"github.com/fatih/color"
+	"github.com/jedib0t/go-pretty/v6/table"
 )
 
 // FIXME: Highlight duplicates
@@ -16,21 +16,22 @@ func getPaths() {
 
 	if variableExists {
 		paths := filepath.SplitList(path)
-		table := termtables.CreateTable()
+		pathDataTable := table.NewWriter()
 
-		table.AddHeaders("Path", "Exists")
+		pathDataTable.SetOutputMirror(os.Stdout)
+		pathDataTable.AppendHeader(table.Row{"Path", "Exists"})
 
 		for _, path := range paths {
 			if _, err := os.Stat(path); err == nil {
-				table.AddRow(path, "Yes")
+				pathDataTable.AppendRow(table.Row{path, "Yes"})
 			} else if os.IsNotExist(err) {
-				table.AddRow(color.RedString(path), color.RedString("No"))
+				pathDataTable.AppendRow(table.Row{color.RedString(path), color.RedString("No")})
 			} else {
 				fmt.Println("WHAT WENT WRONG")
 			}
 		}
-
-		fmt.Println(table.Render())
+		pathDataTable.SetStyle(table.StyleRounded)
+		pathDataTable.Render()
 	}
 }
 
