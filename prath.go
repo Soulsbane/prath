@@ -32,6 +32,8 @@ func getPaths() {
 		}
 		pathDataTable.SetStyle(table.StyleRounded)
 		pathDataTable.Render()
+	} else {
+		fmt.Println("Error: PATH variable not found")
 	}
 }
 
