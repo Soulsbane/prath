@@ -22,8 +22,8 @@ func getPaths() {
 		pathDataTable.AppendHeader(table.Row{"Path", "Exists", "Duplicate"})
 
 		for _, path := range paths {
+			var duplicatePath, existsYesNo string
 			_, exist := duplicatePaths[path]
-			duplicatePath := "No"
 
 			if exist {
 				duplicatePath = color.YellowString("Yes")
@@ -33,13 +33,17 @@ func getPaths() {
 			}
 
 			if _, err := os.Stat(path); err == nil {
-				pathDataTable.AppendRow(table.Row{path, "Yes", duplicatePath})
+				existsYesNo = "Yes"
 			} else if os.IsNotExist(err) {
-				pathDataTable.AppendRow(table.Row{color.RedString(path), color.RedString("No"), duplicatePath})
+				path = color.RedString(path)
+				existsYesNo = color.RedString("No")
 			} else {
-				fmt.Println("Error: ", err)
+				existsYesNo = "Unknown"
 			}
+
+			pathDataTable.AppendRow(table.Row{path, existsYesNo, duplicatePath})
 		}
+
 		pathDataTable.SetStyle(table.StyleRounded)
 		pathDataTable.Render()
 	} else {
