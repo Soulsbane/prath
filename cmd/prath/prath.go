@@ -52,9 +52,7 @@ func getPaths() {
 }
 
 func main() {
-	var args struct {
-		//Ugly bool `arg:"-u" default:"false" help:"Remove colorized output. Yes it's ugly."`
-	}
+	var args ProgramArgs
 
 	arg.MustParse(&args)
 	getPaths()
